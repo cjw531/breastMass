@@ -1,10 +1,61 @@
-* This repository has been archived and is no longer maintained.
-* The code is provided for historical reference and may contain unpatched or unknown vulnerabilities.
-* It should not be used in production systems.
+# VICTRE breastMass: 3D In Silico Breast Mass Generator
+A procedural 3D stochastic breast mass generator developed by the U.S. FDA (DIDSR) under the Virtual Imaging Clinical Trials for Regulatory Evaluation (VICTRE) project. This tool implements the computational model by Sisternes et al. (Med. Phys., 2015) based on Gaussian Random Spheres (GRS) and fractal branching spicules.
 
-****************************************************
+> [!NOTE]
+> 
+> This repository was originally forked from: https://github.com/DIDSR/breastMass 
+
+## Conda Environment Setup
+
+```
+# 1. Create and activate environment
+conda create -n victre_mass python=3.10 -y
+conda activate victre_mass
+
+# 2. Install C++ build dependencies (VTK, TBB runtime/headers, Boost)
+conda install -c conda-forge vtk tbb-devel boost-cpp -y
+
+# 3. Install Python analysis and visualization packages
+pip install numpy scipy matplotlib SimpleITK opencv-python
+
+# 4. Set persistent runtime library path for VTK and reload environment
+conda env config vars set LD_LIBRARY_PATH=$CONDA_PREFIX/lib
+conda deactivate
+conda activate victre_mass
+```
+
+## Build & Compilation
+
+Compile using CMake, ensuring the build system prioritizes the Conda-installed Boost and VTK binaries over system packages:
+
+```
+cd breastMass
+mkdir -p build && cd build
+
+# Configure CMake with Conda environment paths
+cmake -DBOOST_ROOT=$CONDA_PREFIX -DBoost_NO_SYSTEM_PATHS=ON ..
+
+# Build binary
+make -j$(nproc)
+```
+
+Verify compilation:
+
+```
+./breastMass --help
+```
+
+<hr/>
 
 # breastMass
+
+> [!WARNING] 
+> 
+> This repository has been archived and is no longer maintained.
+> 
+> The code is provided for historical reference and may contain unpatched or unknown vulnerabilities.
+> 
+> It should not be used in production systems.
 
 Breast Mass Generation Software
 
