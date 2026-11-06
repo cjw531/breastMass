@@ -1,21 +1,32 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
+project(breastMass)
 
-PROJECT(breastMassProject)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(VTK REQUIRED)
-include(${VTK_USE_FILE})
+find_package(VTK REQUIRED COMPONENTS
+  CommonCore
+  CommonDataModel
+  IOImage
+  IOXML
+  ImagingCore
+)
 
-find_package(OpenMP)
-if(OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+if(VTK_USE_FILE)
+  include(${VTK_USE_FILE})
 endif()
 
-include_directories("$(PROJECT_SOURCE_DIR)")
-
-SET(CMAKE_BUILD_TYPE "Release")
-SET(CMAKE_CXX_FLAGS  "-std=c++0x ${CMAKE_CXX_FLAGS}")
+find_package(Boost REQUIRED COMPONENTS program_options)
+find_package(OpenMP REQUIRED)
 
 add_executable(breastMass breastMass.cxx)
 
-target_link_libraries(breastMass lapack blas boost_program_options ${VTK_LIBRARIES})
+target_include_directories(breastMass PRIVATE
+  ${Boost_INCLUDE_DIRS}
+)
+
+target_link_libraries(breastMass PRIVATE
+  ${VTK_LIBRARIES}
+  ${Boost_LIBRARIES}
+  OpenMP::OpenMP_CXX
+)
