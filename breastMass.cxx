@@ -17,6 +17,11 @@
  */
 
 #include "breastMass.hxx"
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
 
 namespace po = boost::program_options;
 
@@ -105,9 +110,7 @@ int main(int argc, char* argv[]){
   po::store(parse_command_line(argc,argv,all), vm);
 
   if (vm.count("help")) {
-    cout << "\n";
-    cout << "breastMass - breast mass generation\n\n";
-    cout << opts << "\n";
+    cout << all << "\n";
     return 1;
   }
   
@@ -116,8 +119,8 @@ int main(int argc, char* argv[]){
   // read configuration file
   ifstream inConfig(configFile.c_str());
   if(!inConfig){
-    cout << "Can not open configuration file: " << configFile << "\n";
-    return(1);
+    std::cerr << "Cannot open config file: " << configFile << "\n";
+    return 1;
   } else {
     po::store(parse_config_file(inConfig, configFileOpt), vm);
     inConfig.close();
